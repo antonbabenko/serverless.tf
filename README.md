@@ -206,4 +206,6 @@ Consider support my work on [GitHub Sponsors](https://github.com/sponsors/antonb
 
 ## License
 
-MIT licensed. See LICENSE for full details.
+This code is released under the Apache 2.0 License. Please see LICENSE for more details.
+
+Copyright © 2020 Betajob AS
