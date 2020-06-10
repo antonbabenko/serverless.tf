@@ -20,6 +20,7 @@ serverless.tf is not an official AWS or HashiCorp product, and not to be confuse
     * [Build](#build)
     * [Package](#package)
     * [Test](#test)
+    * [Deploy](#deploy)
 
 1. [serverless.tf-compatible Terraform modules](#serverlesstf-compatible-terraform-modules)
 
@@ -33,9 +34,7 @@ serverless.tf is not an official AWS or HashiCorp product, and not to be confuse
 1. AWS Chalice
 1. Pulumi
 1. Secure
-1. Deploy
 1. Monitoring, logging, alerting
-1. Rollback
 1. Orchestrate
 1. Multiple environments
 1. CI/CD
@@ -120,9 +119,9 @@ serverless.tf's approach advises management of all infrastructure resources equa
 
 Lambda functions usually have dependencies (libraries and binaries) built locally, in Docker, or by using external tools or services (e.g., [AWS CodeBuild](https://aws.amazon.com/codebuild/)).
 
-[Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) supports all of these ways of building dependencies (see [examples](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples) there).
+[Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) supports all of these ways of building dependencies (see [examples/build-package](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/build-package) there).
 
-Lambda layers have the same build and package process, so building the Lambda layer and Lambda functions is an identical process.
+Building Lambda layer and Lambda functions is an identical process, and it is already supported by the module.
 
 Using commands like [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-build.html) provided by AWS SAM can be a feasible option if you are using AWS SAM already and want to perform gradual migration towards serverless.tf's approach and start using Terraform AWS Lambda module where extra features like exclude files by masks, configurable storage, and conditional creation already supported.
 
@@ -134,7 +133,7 @@ Creation of Lambda deployment package (for a function or a layer) supported by [
 
 ### Test
 
-Running any tests required for serverless application with Terraform efficiently is rather tricky simply because Terraform was not designed to run tests. There are several options developers can use:
+Running any tests required for serverless application with Terraform efficiently is rather tricky simply because Terraform was not designed to run scripts and get outputs. There are several options developers can use:
 
 1. [null_resource](https://www.terraform.io/docs/providers/null/resource.html) to run shell scripts without worrying about output. 
 1. [Shell provider](https://github.com/scottwinkler/terraform-provider-shell) to manage Shell scripts as fully-fledged resources and have full control of a resource lifecycle handled by Terraform.
@@ -143,15 +142,42 @@ Running any tests required for serverless application with Terraform efficiently
 By using Terragrunt or other tools which allow developers to orchestrate Terraform code, developers can run extra commands (e.g., shell scripts) that are not part of the infrastructure code itself (see [Before and After Hooks](https://terragrunt.gruntwork.io/docs/features/before-and-after-hooks/) there) to perform tests without putting _irrelevant_ code into main infrastructure repository, for example.
 
 
+### Deploy
+
+There are two ways how Lambda function can be updated: by publishing new version (simple deployments) and controlled deployments.
+
+[Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) supports both of these deployments of Lambda functions. See [examples/deploy](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/deploy) for complete end-to-end process (build/update/deploy) of Lambda function using [AWS CodeDeploy](https://aws.amazon.com/codedeploy/). 
+
+Let's look into each in details.
+
+
+#### Simple deployments
+
+Typically, Lambda function updates when source code changes. A new [Lambda Function version](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) will also be created, when it is being published.
+
+Published Lambda Function can be invoked using either version number or using `$LATEST` (unqualified alias). This type of updates is the simplest way of deployment.
+
+
+#### Controlled deployments (rolling, canary, rollbacks)
+
+In order to do controlled deployments (rolling, canary, rollbacks) of Lambda Functions we need to use [Lambda Function aliases](https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html).
+
+In simple terms, Lambda alias is like a pointer to either one version of Lambda Function (when deployment complete), or to two weighted versions of Lambda Function (during rolling or canary deployment).
+
+One Lambda Function can be used in multiple aliases. Using aliases gives large control of which version deployed when having multiple environments.
+
+There is [alias module](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/modules/alias), which simplifies working with alias (create, manage configurations, updates, etc). See [examples/alias](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/alias) for various use-cases how aliases can be configured and used.
+
+There is [deploy module](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/modules/deploy), which creates required resources to do deployments using AWS CodeDeploy. It also creates the deployment, and wait for completion.
+
+AWS CodeDeploy supports a variety of deployment configuration types and can do rolling, canary, and all-in-one deployments of Lambda function. It is also possible to specify rollback settings and hooks to run before and after the deployment. All of these options already supported by the module mentioned above.
+
+
 <!--
 @todo: finish this...
 ### Secure
 
-### Deploy
-
 ### Monitoring, logging, alerting
-
-### Rollback
 
 ### Orchestrate
 
