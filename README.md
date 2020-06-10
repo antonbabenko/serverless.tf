@@ -43,7 +43,9 @@ serverless.tf is not an official AWS or HashiCorp product, and not to be confuse
 
 ## Current Status
 
-This project is in the initial phase. Going through the development process with [Betajob](https://www.betajob.com/)'s products, and with external customers, serverless.tf's concepts will be verifying and updating.
+This project is in the beta. Going through the development process with [Betajob](https://www.betajob.com/)'s products, and with external customers, serverless.tf's concepts will be verifying and updating.
+
+Check out open-source projects [terraform-aws-notify-slack](https://github.com/terraform-aws-modules/terraform-aws-notify-slack) and [serverless.tf playground](https://github.com/antonbabenko/serverless.tf-playground) for examples of using serverless.tf approach.
 
 We focus on AWS specific serverless features and services, but most of the information described here can also be applied to [Google Cloud Functions](https://cloud.google.com/functions), [Azure Functions](https://azure.microsoft.com/en-us/services/functions/), and any other provider with decent support for the resources via [Terraform provider](https://www.terraform.io/docs/providers/).
 
