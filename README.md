@@ -52,7 +52,7 @@ We focus on AWS specific serverless features and services, but most of the infor
 
 ### Getting Started with "why?"
 
-Most likely, the first question you are wondering - _Why do you do this?_ Or, if you know me and have been following my projects for some time, you may think: _Yes, we can do a lot with Terraform, but wrong is with existing solutions available already?_
+Most likely, the first question you are wondering - _Why do you do this?_ Or, if you know me and have been following my projects for some time, you may think: _Yes, we can do a lot with Terraform, but what is wrong with existing solutions available already?_
 
 Before answering what is wrong, let's set the stage by highlighting the good parts of existing toolset available for serverless developers.
 
