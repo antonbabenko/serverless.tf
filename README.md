@@ -4,7 +4,7 @@ This repository / _[serverless.tf framework](https://serverless.tf)_ aims to pro
 
 serverless.tf has started as an organic response to the accidental complexity of many existing tools used by serverless developers.
 
-serverless.tf is not an official AWS or HashiCorp product, and not to be confused with the [Serverless Framework](https://serverless.com/).
+serverless.tf is not an official AWS or HashiCorp product, and is not to be confused with the [Serverless Framework](https://serverless.com/).
 
 
 ## Terms of Content
@@ -47,20 +47,20 @@ This project is in the beta. Going through the development process with [Betajob
 
 Check out open-source projects [terraform-aws-notify-slack](https://github.com/terraform-aws-modules/terraform-aws-notify-slack) and [serverless.tf playground](https://github.com/antonbabenko/serverless.tf-playground) for examples of using serverless.tf approach.
 
-We focus on AWS specific serverless features and services, but most of the information described here can also be applied to [Google Cloud Functions](https://cloud.google.com/functions), [Azure Functions](https://azure.microsoft.com/en-us/services/functions/), and any other provider with decent support for the resources via [Terraform provider](https://www.terraform.io/docs/providers/).
+We focus on AWS-specific serverless features and services, but most of the information described here can also be applied to [Google Cloud Functions](https://cloud.google.com/functions), [Azure Functions](https://azure.microsoft.com/en-us/services/functions/), and any other provider with decent support for the resources via [Terraform provider](https://www.terraform.io/docs/providers/).
 
 
 ### Getting Started with "why?"
 
 Most likely, the first question you are wondering - _Why do you do this?_ Or, if you know me and have been following my projects for some time, you may think: _Yes, we can do a lot with Terraform, but what is wrong with existing solutions available already?_
 
-Before answering what is wrong, let's set the stage by highlighting the good parts of existing toolset available for serverless developers.
+Before answering what is wrong, let's set the stage by highlighting the good parts of the existing toolset available for serverless developers.
 
 There are plenty of tools and frameworks with overlapping functionality, which is excellent - developers now have a choice, if they want.
 
 Assuming that working with serverless would automatically bring developers **everything better** is one of the misconceptions many developers have after starting playing with it. There is [Law of conservation of complexity](https://en.wikipedia.org/wiki/Law_of_conservation_of_complexity) that can be applied to serverless architectures, too. In simple words, it means that the complexity is not changing, but the complexity can be allocated differently between application developers, tools developers, and cloud providers.
 
-As serverless application developers, we shouldn't be exposed to accidental complexity enforced by tools we have to use. Complexity should be simplified as much as possible (always).
+As serverless application developers, we shouldn't be exposed to accidental complexity enforced by the tools we have to use. Complexity should be simplified as much as possible (always).
 
 There is flexibility at the cost of accidental complexity developers have to deal with.
 
@@ -69,7 +69,7 @@ There is flexibility at the cost of accidental complexity developers have to dea
 
 When creating a serverless application, at the minimum least, developers have to deal with:
 
-1. Serverless application frameworks ([Serverless Framework](https://www.serverless.com/), [AWS Chalice](https://chalice.readthedocs.io/en/latest/), [Zappa](https://github.com/Miserlou/Zappa)) to develop, test, and deploy code and serverless infrastructure resources.
+1. Serverless application frameworks ([Serverless Framework](https://www.serverless.com/), [AWS Chalice](https://aws.github.io/chalice/index), [Zappa](https://github.com/zappa/Zappa)) to develop, test, and deploy code and serverless infrastructure resources.
 2. Infrastructure management ([Terraform](https://www.terraform.io/), [AWS CloudFormation](https://aws.amazon.com/cloudformation/)) manages traditional resources which are not related to serverless, and sometimes to create resources for serverless applications, too.
 3. Application deployment (Shell scripts, Makefile, [AWS CodeDeploy](https://aws.amazon.com/codedeploy/), AWS CLI) to orchestrate non-trivial builds of dependencies and do deployments, also.
 
@@ -94,7 +94,7 @@ All of these items are mostly _nodes with dependencies_ developers should descri
 
 Serverless.tf's approach is to use [Terraform](https://www.terraform.io/), one of the most popular and powerful infrastructures as a code management tool.
 
-Additionally, developers can use [Terragrunt](https://terragrunt.gruntwork.io/) as an orchestration tool for Terraform. It is not required but highly recommended since it reduces the complexity of working with Terraform configurations and keeping them DRY as the number of resources increases.
+Additionally, developers can use [Terragrunt](https://terragrunt.gruntwork.io/) as an orchestration tool for Terraform. It is not required but highly recommended since it reduces the complexity of working with Terraform configurations and keeps them DRY as the number of resources increases.
 
 
 ### Lack of high-quality reusable components
@@ -103,11 +103,11 @@ Some of the existing solutions support plugins that extend the functionality of 
 
 In reality, often, developers still have to dive into those to learn internals and archive what they need. Adding functionality to those plugins usually requires writing Javascript code.
 
-Using serverless.tf approach developers rely on open-source [Terraform AWS modules](https://github.com/terraform-aws-modules), which have been developing by [Betajob](https://www.betajob.com/) and huge community during several years, you get to build your serverless project on top of the verified, reusable components.
+Using serverless.tf approach developers rely on open-source [Terraform AWS modules](https://github.com/terraform-aws-modules), which have been developed by [Betajob](https://www.betajob.com/) and a huge community for several years, you get to build your serverless project on top of the verified, reusable components.
 
 Using existing modules allows serverless developers to focus on their primary tasks instead of learning the internals of Terraform or googling the right piece of AWS CloudFormation snippet. Developers can see and execute working examples in each of the modules, integrate modules into the project, and get to know the modules' source code when necessary.
 
-See the whole list of [Supported AWS Serverless Platform Services](https://serverless.tf/#serverless-services) on serverless.tf. More non-serverless modules listed on the [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/).
+See the whole list of [Supported AWS Serverless Platform Services](https://serverless.tf/#serverless-services) on serverless.tf. More non-serverless modules are listed on the [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/).
 
 
 ## Development Workflows
@@ -123,19 +123,19 @@ Lambda functions usually have dependencies (libraries and binaries) built locall
 
 [Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) supports all of these ways of building dependencies (see [examples/build-package](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/build-package) there).
 
-Building Lambda layer and Lambda functions is an identical process, and it is already supported by the module.
+Building the Lambda layer and Lambda functions is an identical process, and it is already supported by the module.
 
-Using commands like [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-build.html) provided by AWS SAM can be a feasible option if you are using AWS SAM already and want to perform gradual migration towards serverless.tf's approach and start using Terraform AWS Lambda module where extra features like exclude files by masks, configurable storage, and conditional creation already supported.
+Using commands like [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-build.html) provided by AWS SAM can be a feasible option if you are using AWS SAM already and want to perform gradual migration towards serverless.tf's approach and start using Terraform AWS Lambda module where extra features like excluding files by masks, configurable storage, and conditional creation are already supported.
 
 
 ### Package
 
-Creation of Lambda deployment package (for a function or a layer) supported by [Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) and can be customized, or completely disabled in favor of using external tool or script to do that (see [examples](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples) there).
+Creation of Lambda deployment package (for a function or a layer) supported by [Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) and can be customized, or completely disabled in favor of using an external tool or script to do that (see [examples](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples) there).
 
 
 ### Test
 
-Running any tests required for serverless application with Terraform efficiently is rather tricky simply because Terraform was not designed to run scripts and get outputs. There are several options developers can use:
+Running any tests required for serverless applications with Terraform efficiently is rather tricky simply because Terraform was not designed to run scripts and get outputs. There are several options developers can use:
 
 1. [null_resource](https://www.terraform.io/docs/providers/null/resource.html) to run shell scripts without worrying about output. 
 1. [Shell provider](https://github.com/scottwinkler/terraform-provider-shell) to manage Shell scripts as fully-fledged resources and have full control of a resource lifecycle handled by Terraform.
@@ -146,33 +146,33 @@ By using Terragrunt or other tools which allow developers to orchestrate Terrafo
 
 ### Deploy
 
-There are two ways how Lambda function can be updated: by publishing new version (simple deployments) and controlled deployments.
+There are two ways how Lambda function can be updated: by publishing new versions (simple deployments) and by controlled deployments.
 
-[Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) supports both of these deployments of Lambda functions. See [examples/deploy](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/deploy) for complete end-to-end process (build/update/deploy) of Lambda function using [AWS CodeDeploy](https://aws.amazon.com/codedeploy/). 
+[Terraform AWS Lambda module](https://github.com/terraform-aws-modules/terraform-aws-lambda) supports both of these deployments of Lambda functions. See [examples/deploy](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/deploy) for a complete end-to-end process (build/update/deploy) of Lambda function using [AWS CodeDeploy](https://aws.amazon.com/codedeploy/). 
 
-Let's look into each in details.
+Let's look into each in detail.
 
 
 #### Simple deployments
 
-Typically, Lambda function updates when source code changes. A new [Lambda Function version](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) will also be created, when it is being published.
+Typically, Lambda function updates when the source code changes. A new [Lambda Function version](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) will also be created, when it is published.
 
-Published Lambda Function can be invoked using either version number or using `$LATEST` (unqualified alias). This type of updates is the simplest way of deployment.
+Published Lambda Function can be invoked using either version number or using `$LATEST` (unqualified alias). This type of update is the simplest way of deployment.
 
 
 #### Controlled deployments (rolling, canary, rollbacks)
 
 In order to do controlled deployments (rolling, canary, rollbacks) of Lambda Functions we need to use [Lambda Function aliases](https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html).
 
-In simple terms, Lambda alias is like a pointer to either one version of Lambda Function (when deployment complete), or to two weighted versions of Lambda Function (during rolling or canary deployment).
+In simple terms, Lambda alias is like a pointer to either one version of Lambda Function (when deployment is complete), or to two weighted versions of Lambda Function (during rolling or canary deployment).
 
-One Lambda Function can be used in multiple aliases. Using aliases gives large control of which version deployed when having multiple environments.
+One Lambda Function can be used in multiple aliases. Using aliases gives large control over which version is deployed when having multiple environments.
 
-There is [alias module](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/modules/alias), which simplifies working with alias (create, manage configurations, updates, etc). See [examples/alias](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/alias) for various use-cases how aliases can be configured and used.
+There is [alias module](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/modules/alias), which simplifies working with alias (create, manage configurations, updates, etc). See [examples/alias](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/examples/alias) for various use cases of how aliases can be configured and used.
 
-There is [deploy module](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/modules/deploy), which creates required resources to do deployments using AWS CodeDeploy. It also creates the deployment, and wait for completion.
+There is [deploy module](https://github.com/terraform-aws-modules/terraform-aws-lambda/tree/master/modules/deploy), which creates the required resources to do deployments using AWS CodeDeploy. It also creates the deployment, and waits for completion.
 
-AWS CodeDeploy supports a variety of deployment configuration types and can do rolling, canary, and all-in-one deployments of Lambda function. It is also possible to specify rollback settings and hooks to run before and after the deployment. All of these options already supported by the module mentioned above.
+AWS CodeDeploy supports a variety of deployment configuration types and can do rolling, canary, and all-in-one deployments of Lambda function. It is also possible to specify rollback settings and hooks to run before and after the deployment. All of these options are already supported by the module mentioned above.
 
 
 <!--
@@ -205,7 +205,7 @@ AWS CodeDeploy supports a variety of deployment configuration types and can do r
 
 ## serverless.tf-compatible Terraform modules
 
-All Terraform modules listed on [serverless.tf](https://serverless.tf/#aws-serverless) plus all modules in [Terraform AWS Modules GitHub Organization](https://github.com/terraform-aws-modules) available in the [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules) were also designed and implemented with serverless.tf-compatibility in mind (e.g., naming, features, dependencies, quality, etc.).
+All Terraform modules are listed on [serverless.tf](https://serverless.tf/#aws-serverless) plus all modules in [Terraform AWS Modules GitHub Organization](https://github.com/terraform-aws-modules) available in the [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules) were also designed and implemented with serverless.tf-compatibility in mind (e.g., naming, features, dependencies, quality, etc.).
  
 
 ## What is next?
